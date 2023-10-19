@@ -1,17 +1,14 @@
 <template>
-  <Header />
-  <FilterPanel />
+  <CategoryFilter />
 </template>
 
 <script>
-import Header from "./components/Header.vue";
-import FilterPanel from "./components/FilterPanel.vue";
+import CategoryFilter from "./components/CategoryFilter.vue";
 
 export default {
   name: "App",
   components: {
-    Header,
-    FilterPanel,
+    CategoryFilter,
   },
 };
 </script>
