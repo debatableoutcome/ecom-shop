@@ -32,7 +32,13 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  background: #660099;
+  background: rgb(102, 0, 153);
+  background: linear-gradient(
+    90deg,
+    rgba(102, 0, 153, 1) 12%,
+    rgba(89, 10, 179, 1) 50%,
+    rgba(135, 58, 218, 1) 100%
+  );
 }
 
 .logo img {
