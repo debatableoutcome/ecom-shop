@@ -2,8 +2,18 @@
   <main>
     <Header />
     <div class="lower-container">
-      <FilterPanel />
-      <ProductScreen />
+      <FilterPanel
+        :priceFilter="priceFilter"
+        :categoryFilter="categoryFilter"
+        @update:priceFilter="priceFilter = $event"
+        @update:categoryFilter="categoryFilter = $event"
+        @applyFilters="applyFilters"
+        @resetFilters="resetFilters"
+      />
+      <ProductScreen
+        :priceFilter="priceFilter"
+        :categoryFilter="categoryFilter"
+      />
     </div>
   </main>
 </template>
@@ -14,11 +24,26 @@ import FilterPanel from "./components/FilterPanel.vue";
 import ProductScreen from "./components/ProductScreen.vue";
 
 export default {
-  name: "App",
+  data() {
+    return {
+      priceFilter: { minPrice: null, maxPrice: null },
+      categoryFilter: null,
+    };
+  },
   components: {
     Header,
     FilterPanel,
     ProductScreen,
+  },
+  methods: {
+    applyFilters(priceFilter, categoryFilter) {
+      this.priceFilter = priceFilter;
+      this.categoryFilter = categoryFilter;
+    },
+    resetFilters() {
+      this.priceFilter = { minPrice: null, maxPrice: null };
+      this.categoryFilter = null;
+    },
   },
 };
 </script>
@@ -42,7 +67,7 @@ main {
   background: green;
 }
 .lower-container {
-  background: hotpink;
+  background: rgb(241, 235, 232);
   width: 100%;
   height: 100%;
   display: flex;
