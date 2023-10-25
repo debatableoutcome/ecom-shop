@@ -3,11 +3,21 @@
     <h2>Фильтры</h2>
 
     <h4>Цена</h4>
-    <PriceFilter />
-    <CategoryFilter />
+    <PriceFilter
+      :priceFilter="localPriceFilter"
+      @update:priceFilter="localPriceFilter = $event"
+    />
 
-    <SfButton type="submit" class="btn">Применить</SfButton>
-    <SfButton class="btn">Сбросить</SfButton>
+    <h4>Категории</h4>
+    <CategoryFilter
+      :categoryFilter="localCategoryFilter"
+      @update:categoryFilter="localCategoryFilter = $event"
+    />
+
+    <SfButton type="submit" class="btn" @click="applyFilters"
+      >Применить</SfButton
+    >
+    <SfButton class="btn" @click="resetFilters">Сбросить</SfButton>
   </aside>
 </template>
 
@@ -17,11 +27,44 @@ import PriceFilter from "./PriceFilter.vue";
 import CategoryFilter from "./CategoryFilter.vue";
 
 export default {
-  name: "filter-component",
+  name: "FilterPanel",
   components: {
     SfButton,
     PriceFilter,
     CategoryFilter,
+  },
+  props: {
+    priceFilter: Object,
+    categoryFilter: String,
+  },
+  data() {
+    return {
+      localPriceFilter: this.priceFilter,
+      localCategoryFilter: this.categoryFilter,
+      filteredProducts: [],
+      products: [],
+    };
+  },
+  watch: {
+    priceFilter: {
+      handler(newVal) {
+        this.localPriceFilter = newVal;
+      },
+      deep: true,
+    },
+    categoryFilter(newVal) {
+      this.localCategoryFilter = newVal;
+    },
+  },
+  methods: {
+    applyFilters() {
+      this.$emit("update:priceFilter", this.localPriceFilter);
+      this.$emit("update:categoryFilter", this.localCategoryFilter);
+    },
+    resetFilters() {
+      this.localCategoryFilter = null;
+      this.localPriceFilter = { minPrice: null, maxPrice: null };
+    },
   },
 };
 </script>
@@ -64,7 +107,6 @@ aside {
   align-items: center;
   margin-right: 30px;
   transition: all 0.3s;
-
   border: none;
 }
 </style>
