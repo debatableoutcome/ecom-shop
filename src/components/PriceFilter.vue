@@ -4,22 +4,21 @@
       <div class="price-fields-left">
         <label>От</label>
         <input
-          v-model="minPrice"
+          :value="minPrice"
+          @input="updatePrice('minPrice', $event.target.value)"
           type="text"
           class="input-field"
           placeholder="0"
-          @input="removeLeadingZeros('minPrice')"
         />
       </div>
       <div class="price-fields-right">
         <label>До</label>
         <input
-          label="До"
-          v-model="maxPrice"
+          :value="maxPrice"
+          @input="updatePrice('maxPrice', $event.target.value)"
           type="text"
           :placeholder="10000"
           class="input-field"
-          @input="removeLeadingZeros('maxPrice')"
         />
       </div>
     </div>
@@ -28,20 +27,48 @@
 
 <script>
 export default {
+  props: {
+    priceFilter: Object,
+  },
   data() {
     return {
-      minPrice: null,
-      maxPrice: null,
+      minPrice: this.priceFilter.minPrice,
+      maxPrice: this.priceFilter.maxPrice,
     };
+  },
+  watch: {
+    priceFilter: {
+      handler(newVal) {
+        this.minPrice = newVal.minPrice;
+        this.maxPrice = newVal.maxPrice;
+      },
+      deep: true,
+    },
+    minPrice(newVal, oldVal) {
+      console.log("minPrice изменен:", newVal, oldVal); // Логирование здесь
+      this.$emit("update:priceFilter", {
+        minPrice: newVal,
+        maxPrice: this.maxPrice,
+      });
+    },
+    maxPrice(newVal, oldVal) {
+      console.log("maxPrice изменен:", newVal, oldVal); // Логирование здесь
+      this.$emit("update:priceFilter", {
+        minPrice: this.minPrice,
+        maxPrice: newVal,
+      });
+    },
   },
   methods: {
     validatePrice(price) {
       const regex = /^(?!0\d)(\d{1,7}(\.\d{1,2})?)?$/;
       return regex.test(price);
     },
-    removeLeadingZeros(field) {
-      if (this[field] !== "" && parseFloat(this[field]) > 0) {
-        this[field] = parseFloat(this[field]);
+    updatePrice(field, value) {
+      if (this.validatePrice(value)) {
+        const cleanValue = parseFloat(value) > 0 ? parseFloat(value) : 0;
+        this[field] = cleanValue;
+        console.log(`${field} обновлено:`, this[field]); // Логирование здесь
       }
     },
     handleFilter() {
@@ -53,20 +80,15 @@ export default {
         alert('Неверный формат цены или условие "От" > "До" не выполняется');
         return;
       }
-    },
-
-    computed: {
-      filteredProducts() {
-        return this.products.filter((product) => {
-          return (
-            product.price >= this.minPrice && product.price <= this.maxPrice
-          );
-        });
-      },
+      console.log("Фильтр применен:", {
+        minPrice: this.minPrice,
+        maxPrice: this.maxPrice,
+      });
     },
   },
 };
 </script>
+
 <style>
 form {
   width: 100%;

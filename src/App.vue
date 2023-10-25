@@ -5,11 +5,11 @@
       <FilterPanel
         :priceFilter="priceFilter"
         :categoryFilter="categoryFilter"
-        @update:priceFilter="priceFilter = $event"
-        @update:categoryFilter="categoryFilter = $event"
-        @applyFilters="applyFilters"
-        @resetFilters="resetFilters"
+        @update:priceFilter="updatePriceFilter"
+        @update:categoryFilter="updateCategoryFilter"
+        @filtersReset="handleFiltersReset"
       />
+
       <ProductScreen
         :priceFilter="priceFilter"
         :categoryFilter="categoryFilter"
@@ -36,11 +36,15 @@ export default {
     ProductScreen,
   },
   methods: {
-    applyFilters(priceFilter, categoryFilter) {
-      this.priceFilter = priceFilter;
-      this.categoryFilter = categoryFilter;
+    updatePriceFilter(newFilter) {
+      this.priceFilter = newFilter;
+      console.log("Обновлен глобальный priceFilter:", this.priceFilter); // Добавьте логирование
     },
-    resetFilters() {
+    updateCategoryFilter(newCategory) {
+      this.categoryFilter = newCategory;
+      console.log("Обновлен глобальный categoryFilter:", this.categoryFilter); // Добавьте логирование
+    },
+    handleFiltersReset() {
       this.priceFilter = { minPrice: null, maxPrice: null };
       this.categoryFilter = null;
     },
@@ -67,11 +71,11 @@ main {
   background: green;
 }
 .lower-container {
-  background: rgb(241, 235, 232);
+  background: rgb(55, 26, 119);
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center;
+  align-items: self-start;
   justify-content: space-between;
   gap: 20px;
 }
