@@ -58,12 +58,20 @@ export default {
   },
   methods: {
     applyFilters() {
+      console.log(
+        "Применяются фильтры:",
+        this.localPriceFilter,
+        this.localCategoryFilter
+      );
       this.$emit("update:priceFilter", this.localPriceFilter);
       this.$emit("update:categoryFilter", this.localCategoryFilter);
     },
     resetFilters() {
       this.localCategoryFilter = null;
       this.localPriceFilter = { minPrice: null, maxPrice: null };
+      this.$emit("update:priceFilter", this.localPriceFilter);
+      this.$emit("update:categoryFilter", this.localCategoryFilter);
+      this.$emit("filtersReset");
     },
   },
 };

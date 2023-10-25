@@ -27,9 +27,6 @@ export default {
       products: [],
       filteredProducts: [],
       error: null,
-      // Используем локальные переменные для фильтров
-      localPriceFilter: { minPrice: null, maxPrice: null },
-      localCategoryFilter: null,
     };
   },
   mounted() {
@@ -37,7 +34,7 @@ export default {
       .getProducts()
       .then((response) => {
         this.products = response.data.data;
-        this.filteredProducts = [...this.products];
+        this.applyFilters();
       })
       .catch((error) => {
         console.error("There was an error fetching the products:", error);
@@ -47,41 +44,35 @@ export default {
   },
   props: {
     priceFilter: Object,
-    categoryFilter: String,
+    categoryFilter: String, // Мы все еще оставляем это, если вам нужны и категории, и теги
   },
   watch: {
     priceFilter: {
-      handler(newVal) {
-        this.localPriceFilter = newVal;
+      handler() {
         this.applyFilters();
       },
       deep: true,
     },
     categoryFilter: {
-      handler(newVal) {
-        this.localCategoryFilter = newVal;
+      handler() {
         this.applyFilters();
       },
     },
   },
   methods: {
     applyFilters() {
+      const selectedTag = this.categoryFilter; // Используем categoryFilter как выбранный тег
       this.filteredProducts = this.products.filter((product) => {
-        const categoryMatch =
-          !this.localCategoryFilter ||
-          product.category === this.localCategoryFilter;
+        const tagMatch =
+          !selectedTag || (product.tags && product.tags.includes(selectedTag));
         const priceMatch =
-          (!this.localPriceFilter.minPrice ||
-            product.price >= parseFloat(this.localPriceFilter.minPrice)) &&
-          (!this.localPriceFilter.maxPrice ||
-            product.price <= parseFloat(this.localPriceFilter.maxPrice));
-        return categoryMatch && priceMatch;
+          (!this.priceFilter.minPrice ||
+            product.price >= parseFloat(this.priceFilter.minPrice)) &&
+          (!this.priceFilter.maxPrice ||
+            product.price <= parseFloat(this.priceFilter.maxPrice));
+
+        return tagMatch && priceMatch;
       });
-    },
-    resetFilters() {
-      this.localCategoryFilter = null;
-      this.localPriceFilter = { minPrice: null, maxPrice: null };
-      this.filteredProducts = [...this.products];
     },
   },
 };

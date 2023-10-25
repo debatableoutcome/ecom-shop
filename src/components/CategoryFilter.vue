@@ -22,21 +22,58 @@
 import { SfRadio } from "@storefront-ui/vue";
 
 export default {
-  components: {
-    SfRadio,
+  props: {
+    categoryFilter: String,
   },
+
   data() {
     return {
-      radioGroupModelValue: "",
+      radioGroupModelValue: this.categoryFilter || "",
       details: [
-        { id: "cat1", name: "Категория 1", value: "Category 1" },
-        { id: "cat2", name: "Категория 2", value: "Category 2" },
-        { id: "cat3", name: "Категория 3", value: "Category 3" },
-        { id: "cat4", name: "Категория 4", value: "Category 4" },
-        { id: "cat5", name: "Категория 5", value: "Category 5" },
-        { id: "cat6", name: "Категория 6", value: "Category 6" },
+        {
+          id: "dicta",
+          name: "Категория 1",
+          value: "dicta",
+        },
+        {
+          id: "vel",
+          name: "Категория 2",
+          value: "vel",
+        },
+        {
+          id: "omnis",
+          name: "Категория 3",
+          value: "omnis",
+        },
+        {
+          id: "quos",
+          name: "Категория 4",
+          value: "quos",
+        },
+        {
+          id: "eos",
+          name: "Категория 5",
+          value: "eos",
+        },
+        {
+          id: "magni",
+          name: "Категория 6",
+          value: "magni",
+        },
       ],
     };
+  },
+  watch: {
+    radioGroupModelValue(newVal) {
+      this.$emit("update:categoryFilter", newVal);
+    },
+    categoryFilter(newVal) {
+      this.radioGroupModelValue = newVal;
+      // this.localCategoryFilter = newVal;
+    },
+  },
+  components: {
+    SfRadio,
   },
 };
 </script>
