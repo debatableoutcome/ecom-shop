@@ -6,7 +6,13 @@
     </div>
     <SfButton class="basket relative" square variant="tertiary">
       <SfIconShoppingCart />
-      <SfBadge />
+      <SfBadge
+        v-if="$store.getters.getCartCount > 0"
+        :content="$store.getters.getCartCount"
+        :max="99"
+        placement="top-right"
+      >
+      </SfBadge>
     </SfButton>
   </div>
 </template>
@@ -16,10 +22,13 @@ import { SfBadge, SfButton, SfIconShoppingCart } from "@storefront-ui/vue";
 export default {
   name: "header-component",
   components: {
-    // SfImage,
     SfButton,
     SfBadge,
     SfIconShoppingCart,
+  },
+  props: ["cartCount"],
+  mounted() {
+    console.log("cartCount в header:", this.cartCount);
   },
 };
 </script>
@@ -48,13 +57,17 @@ export default {
 
 .basket {
   cursor: pointer;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
-  margin-right: 30px;
+  margin-right: 50px;
   transition: all 0.3s;
-  background: #ff6600;
+  color: #ff6600;
+  background: transparent;
   border: none;
+}
+.basket-icon {
+  color: #ff6600;
 }
 </style>

@@ -18,6 +18,7 @@
           class="basket relative purchase-btn uppercase"
           square
           variant="tertiary"
+          @click="addToCart"
         >
           <SfIconShoppingCart class="basket-icon-small" />
 
@@ -69,6 +70,10 @@ export default {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       });
+    },
+    addToCart() {
+      this.$store.commit("incrementCart");
+      console.log("++");
     },
   },
 };

@@ -28,12 +28,15 @@
 <script>
 export default {
   props: {
-    priceFilter: Object,
+    priceFilter: {
+      type: Object,
+      default: () => ({ minPrice: null, maxPrice: null }),
+    },
   },
   data() {
     return {
-      minPrice: this.priceFilter.minPrice,
-      maxPrice: this.priceFilter.maxPrice,
+      minPrice: this.priceFilter ? this.priceFilter.minPrice : null,
+      maxPrice: this.priceFilter ? this.priceFilter.maxPrice : null,
     };
   },
   watch: {

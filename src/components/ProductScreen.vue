@@ -43,8 +43,11 @@ export default {
       });
   },
   props: {
-    priceFilter: Object,
-    categoryFilter: String, // Мы все еще оставляем это, если вам нужны и категории, и теги
+    priceFilter: {
+      type: Object,
+      default: () => ({ minPrice: null, maxPrice: null }),
+    },
+    categoryFilter: String,
   },
   watch: {
     priceFilter: {
@@ -61,14 +64,16 @@ export default {
   },
   methods: {
     applyFilters() {
-      const selectedTag = this.categoryFilter; // Используем categoryFilter как выбранный тег
+      const selectedTag = this.categoryFilter;
       this.filteredProducts = this.products.filter((product) => {
         const tagMatch =
           !selectedTag || (product.tags && product.tags.includes(selectedTag));
         const priceMatch =
-          (!this.priceFilter.minPrice ||
+          (!this.priceFilter ||
+            !this.priceFilter.minPrice ||
             product.price >= parseFloat(this.priceFilter.minPrice)) &&
-          (!this.priceFilter.maxPrice ||
+          (!this.priceFilter ||
+            !this.priceFilter.maxPrice ||
             product.price <= parseFloat(this.priceFilter.maxPrice));
 
         return tagMatch && priceMatch;
@@ -89,7 +94,8 @@ export default {
   padding: 20px;
 }
 .gallery {
-  background: #660099;
+  background: rgb(55, 26, 119);
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
