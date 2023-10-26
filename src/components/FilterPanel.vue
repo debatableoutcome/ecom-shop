@@ -4,14 +4,14 @@
 
     <h4>Цена</h4>
     <PriceFilter
-      :priceFilter="localPriceFilter"
-      @update:priceFilter="localPriceFilter = $event"
+      :priceFilter="priceFilter"
+      @update:priceFilter="updatePriceFilter"
     />
 
     <h4>Категории</h4>
     <CategoryFilter
-      :categoryFilter="localCategoryFilter"
-      @update:categoryFilter="localCategoryFilter = $event"
+      :categoryFilter="categoryFilter"
+      @update:categoryFilter="updateCategoryFilter"
     />
 
     <SfButton type="submit" class="btn" @click="applyFilters"
@@ -37,41 +37,26 @@ export default {
     priceFilter: Object,
     categoryFilter: String,
   },
-  data() {
-    return {
-      localPriceFilter: this.priceFilter,
-      localCategoryFilter: this.categoryFilter,
-      filteredProducts: [],
-      products: [],
-    };
-  },
-  watch: {
-    priceFilter: {
-      handler(newVal) {
-        this.localPriceFilter = newVal;
-      },
-      deep: true,
-    },
-    categoryFilter(newVal) {
-      this.localCategoryFilter = newVal;
-    },
-  },
   methods: {
     applyFilters() {
+      this.$emit("update:priceFilter", this.priceFilter);
+      this.$emit("update:categoryFilter", this.categoryFilter);
       console.log(
         "Применяются фильтры:",
-        this.localPriceFilter,
-        this.localCategoryFilter
+        this.priceFilter,
+        this.categoryFilter
       );
-      this.$emit("update:priceFilter", this.localPriceFilter);
-      this.$emit("update:categoryFilter", this.localCategoryFilter);
     },
     resetFilters() {
-      this.localCategoryFilter = null;
-      this.localPriceFilter = { minPrice: null, maxPrice: null };
-      this.$emit("update:priceFilter", this.localPriceFilter);
-      this.$emit("update:categoryFilter", this.localCategoryFilter);
-      this.$emit("filtersReset");
+      this.$emit("update:priceFilter", { minPrice: null, maxPrice: null });
+      this.$emit("update:categoryFilter", null);
+      console.log("Сброс фильтров");
+    },
+    updatePriceFilter(newFilter) {
+      this.$emit("update:priceFilter", newFilter);
+    },
+    updateCategoryFilter(newCategory) {
+      this.$emit("update:categoryFilter", newCategory);
     },
   },
 };

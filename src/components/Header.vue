@@ -1,15 +1,14 @@
 <template>
   <div class="header">
     <div class="logo">
-      <!-- <SfImage src="@/assets/logo.png" alt="Ecom Logo" class="logo" /> -->
       <img src="@/assets/logo.png" alt="Ecom Logo" class="logo" />
     </div>
     <SfButton class="basket relative" square variant="tertiary">
-      <SfIconShoppingCart />
+      <SfIconShoppingCart class="icon-basket" />
       <SfBadge
         :content="$store.getters.getCartCount"
         :max="99"
-        class="outline outline-white group-hover:outline-primary-100 group-active:outline-primary-200"
+        class="badge"
         placement="top-right"
         v-if="$store.getters.getCartCount > 0"
       >
@@ -37,7 +36,7 @@ export default {
 <style scoped>
 .header {
   width: 100%;
-  height: 47px;
+  height: 100px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -59,8 +58,7 @@ export default {
 .basket {
   background-color: blue;
   cursor: pointer;
-  width: 50px;
-
+  width: 70px;
   display: flex;
   align-items: center;
   margin-right: 50px;
@@ -68,5 +66,18 @@ export default {
   color: #ff6600;
   background: transparent;
   border: none;
+  border-radius: 50% !important;
+}
+.badge {
+  color: black;
+  width: 25px;
+  background-color: rgb(241, 10, 226);
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+.icon-basket {
+  width: 40px;
+  padding-right: 3px;
 }
 </style>
