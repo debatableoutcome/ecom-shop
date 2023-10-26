@@ -56,14 +56,13 @@ export default {
 }
 
 .basket {
-  background-color: blue;
   cursor: pointer;
   width: 70px;
   display: flex;
   align-items: center;
   margin-right: 50px;
   transition: all 0.3s;
-  color: #ff6600;
+
   background: transparent;
   border: none;
   border-radius: 50% !important;

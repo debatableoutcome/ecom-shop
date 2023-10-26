@@ -130,12 +130,15 @@ export default {
   width: 80%;
   height: 30px;
   font-size: 12px;
-  background: #ff6600;
+  background: #c435a5;
+
   border: none;
   padding: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.769);
 }
 .basket-button:hover {
-  background: #f49555;
+  background: rgb(239, 9, 47);
+  color: white;
 }
 .basket-button:active {
   background: rgb(239, 11, 65);
