@@ -72,7 +72,7 @@ export default {
   color: black;
   font-weight: 700;
   width: 25px;
-  background-color: rgb(241, 10, 226);
+  background-color: rgb(239, 11, 65);
   border-radius: 50%;
   margin-bottom: 20px;
 }
