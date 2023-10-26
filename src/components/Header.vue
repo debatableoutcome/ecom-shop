@@ -70,6 +70,7 @@ export default {
 }
 .badge {
   color: black;
+  font-weight: 700;
   width: 25px;
   background-color: rgb(241, 10, 226);
   border-radius: 50%;

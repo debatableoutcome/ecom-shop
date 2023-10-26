@@ -6,7 +6,7 @@ import store from "./store";
 // import "tailwindcss/tailwind.css";
 
 import "./assets/styles.css";
-
+// createApp(App).use(store).mount("#app");
 const app = createApp(App);
 
 app.use(store);

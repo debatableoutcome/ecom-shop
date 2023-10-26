@@ -3,25 +3,22 @@
     <h2>Фильтры</h2>
 
     <h4>Цена</h4>
-    <PriceFilter
-      :priceFilter="priceFilter"
-      @update:priceFilter="updatePriceFilter"
-    />
+    <PriceFilter v-model="localPriceFilter" />
 
     <h4>Категории</h4>
-    <CategoryFilter
-      :categoryFilter="categoryFilter"
-      @update:categoryFilter="updateCategoryFilter"
-    />
+    <CategoryFilter v-model="localCategoryFilter" />
 
     <SfButton type="submit" class="btn" @click="applyFilters"
       >Применить</SfButton
     >
-    <SfButton class="btn" @click="resetFilters">Сбросить</SfButton>
+
+    <SfButton class="btn" @click="resetLocalFilters">Сбросить</SfButton>
   </aside>
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
+
 import { SfButton } from "@storefront-ui/vue";
 import PriceFilter from "./PriceFilter.vue";
 import CategoryFilter from "./CategoryFilter.vue";
@@ -33,39 +30,58 @@ export default {
     PriceFilter,
     CategoryFilter,
   },
-  props: {
-    priceFilter: Object,
-    categoryFilter: String,
+  computed: {
+    ...mapState(["cartCount", "priceFilter", "categoryFilter"]),
   },
+  data() {
+    return {
+      localPriceFilter: this.priceFilter,
+      localCategoryFilter: this.categoryFilter,
+    };
+    // return {
+    //   localPriceFilter: { ...this.priceFilter }, // копия объекта
+    //   localCategoryFilter: this.categoryFilter,
+    // };
+  },
+  watch: {
+    priceFilter: {
+      handler(newValue) {
+        this.localPriceFilter = newValue;
+      },
+      immediate: true,
+    },
+    categoryFilter: {
+      handler(newValue) {
+        this.localCategoryFilter = newValue;
+      },
+      immediate: true,
+    },
+  },
+
   methods: {
+    ...mapActions(["applyPriceFilter", "applyCategoryFilter"]),
     applyFilters() {
-      this.$emit("update:priceFilter", this.priceFilter);
-      this.$emit("update:categoryFilter", this.categoryFilter);
-      console.log(
-        "Применяются фильтры:",
-        this.priceFilter,
-        this.categoryFilter
-      );
-    },
-    resetFilters() {
-      this.$store.commit("setPriceFilter", { minPrice: null, maxPrice: null });
-      this.$store.commit("setCategoryFilter", null);
-
-      console.log(
-        "Сброс фильтров:",
-        "Global Price Filter:",
-        this.priceFilter,
-        "Global Category Filter:",
-        this.categoryFilter
-      );
+      this.applyPriceFilter(this.localPriceFilter);
+      this.applyCategoryFilter(this.localCategoryFilter);
     },
 
-    updatePriceFilter(newFilter) {
-      this.$emit("update:priceFilter", newFilter);
+    //   console.log(
+    //     "Применяются фильтры:",
+    //     "Global Price Filter:",
+    //     this.priceFilter,
+    //     "Global Category Filter:",
+    //     this.categoryFilter
+    //   );
+    // },
+    handlePriceChange(min, max) {
+      this.applyPriceFilter({ minPrice: min, maxPrice: max });
     },
-    updateCategoryFilter(newCategory) {
-      this.$emit("update:categoryFilter", newCategory);
+    handleCategoryChange(category) {
+      this.applyCategoryFilter(category);
     },
+    // resetLocalFilters() {
+    //   this.resetFilters();
+    // },
   },
 };
 </script>
