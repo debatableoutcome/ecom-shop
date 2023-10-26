@@ -2,15 +2,8 @@
   <main>
     <Header :cartCount="cartCount" />
     <div class="lower-container">
-      <FilterPanel
-        :priceFilter="priceFilter"
-        :categoryFilter="categoryFilter"
-      />
-
-      <ProductScreen
-        :priceFilter="priceFilter"
-        :categoryFilter="categoryFilter"
-      />
+      <FilterPanel />
+      <ProductScreen />
     </div>
   </main>
 </template>
@@ -22,18 +15,13 @@ import FilterPanel from "./components/FilterPanel.vue";
 import ProductScreen from "./components/ProductScreen.vue";
 
 export default {
-  data() {
-    return {
-      cartCount: 0,
-    };
-  },
-  computed: {
-    ...mapState(["priceFilter", "categoryFilter"]),
-  },
   components: {
     Header,
     FilterPanel,
     ProductScreen,
+  },
+  computed: {
+    ...mapState(["priceFilter", "categoryFilter"]),
   },
 };
 </script>

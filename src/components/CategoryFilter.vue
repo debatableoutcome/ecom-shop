@@ -19,6 +19,7 @@
 
 <script>
 import { SfRadio } from "@storefront-ui/vue";
+import { mapActions } from "vuex";
 
 export default {
   props: {
@@ -64,11 +65,11 @@ export default {
   },
   watch: {
     radioGroupModelValue(newVal) {
-      this.$emit("update:categoryFilter", newVal);
+      this.applyCategoryFilter(newVal);
     },
-    categoryFilter(newVal) {
-      this.radioGroupModelValue = newVal;
-    },
+  },
+  methods: {
+    ...mapActions(["applyCategoryFilter"]),
   },
   components: {
     SfRadio,

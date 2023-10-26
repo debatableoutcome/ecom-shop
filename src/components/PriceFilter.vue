@@ -4,8 +4,8 @@
       <div class="price-fields-left">
         <label>От</label>
         <input
-          :value="minPrice"
-          @input="updatePrice('minPrice', $event.target.value)"
+          :value="priceFilter.minPrice"
+          @input="updatePrice('min', $event.target.value)"
           type="text"
           class="input-field"
           placeholder="0"
@@ -14,11 +14,11 @@
       <div class="price-fields-right">
         <label>До</label>
         <input
-          :value="maxPrice"
-          @input="updatePrice('maxPrice', $event.target.value)"
+          :value="priceFilter.maxPrice"
+          @input="updatePrice('max', $event.target.value)"
           type="text"
-          :placeholder="10000"
           class="input-field"
+          placeholder="10000"
         />
       </div>
     </div>
@@ -26,54 +26,46 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapState } from "vuex";
 
 export default {
-  data() {
-    return {
-      minPrice: null,
-      maxPrice: null,
-    };
-  },
-  mounted() {
-    const { minPrice, maxPrice } = this.$store.state.priceFilter;
-    this.minPrice = minPrice;
-    this.maxPrice = maxPrice;
+  computed: {
+    ...mapState(["priceFilter"]),
   },
   methods: {
-    ...mapMutations(["setPriceFilter"]),
-    validatePrice(price) {
-      const regex = /^(?!0\d)(\d{1,7}(\.\d{1,2})?)?$/;
-      return regex.test(price);
-    },
-    updatePrice(field, value) {
-      if (this.validatePrice(value)) {
-        const cleanValue = value === "" ? null : parseFloat(value);
-        this[field] = cleanValue;
-        console.log(`${field} обновлено:`, this[field]);
-        console.log("Отправляем в мутацию:", {
-          minPrice: this.minPrice,
-          maxPrice: this.maxPrice,
+    ...mapMutations(["updatePriceFilter"]),
+    updatePrice(type, value) {
+      const price = parseFloat(value) || null;
+      if (type === "min") {
+        this.updatePriceFilter({
+          minPrice: price,
+          maxPrice: this.priceFilter.maxPrice,
         });
-        this.setPriceFilter({
-          minPrice: this.minPrice,
-          maxPrice: this.maxPrice,
+      } else {
+        this.updatePriceFilter({
+          minPrice: this.priceFilter.minPrice,
+          maxPrice: price,
         });
       }
     },
     handleFilter() {
       if (
-        !this.validatePrice(this.minPrice) ||
-        !this.validatePrice(this.maxPrice) ||
-        Number(this.minPrice) > Number(this.maxPrice)
+        !this.validatePrice(this.localMinPrice) ||
+        !this.validatePrice(this.localMaxPrice) ||
+        Number(this.localMinPrice) > Number(this.localMaxPrice)
       ) {
         alert('Неверный формат цены или условие "От" > "До" не выполняется');
         return;
       }
-      console.log("Фильтр применен:", {
-        minPrice: this.minPrice,
-        maxPrice: this.maxPrice,
+      this.updatePriceFilter({
+        minPrice: this.localMinPrice,
+        maxPrice: this.localMaxPrice,
       });
+    },
+
+    validatePrice(price) {
+      const regex = /^(?!0\d)(\d{1,7}(\.\d{1,2})?)?$/;
+      return regex.test(price);
     },
   },
 };
@@ -84,7 +76,7 @@ form {
   width: 100%;
 }
 .input-field {
-  color: black;
+  color: #000000;
   width: 50%;
   margin-top: 15px;
 }
@@ -95,6 +87,8 @@ form {
 }
 .price-fields-left,
 .price-fields-right {
+  width: 100%;
+
   display: flex;
   align-items: center;
   justify-content: space-between;

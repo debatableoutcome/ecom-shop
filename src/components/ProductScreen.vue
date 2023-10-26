@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
 import ProductTile from "@/components/ProductTile.vue";
 import apiService from "@/API/apiService.js";
 
@@ -25,9 +26,36 @@ export default {
   data() {
     return {
       products: [],
-      filteredProducts: [],
+
       error: null,
     };
+  },
+  computed: {
+    ...mapState(["priceFilter", "categoryFilter"]),
+    filteredProducts() {
+      return this.products.filter((product) => {
+        const priceMatch =
+          (!this.priceFilter.minPrice ||
+            product.price >= this.priceFilter.minPrice) &&
+          (!this.priceFilter.maxPrice ||
+            product.price <= this.priceFilter.maxPrice);
+        const tagMatch =
+          !this.categoryFilter ||
+          (product.tags && product.tags.includes(this.categoryFilter));
+        return priceMatch && tagMatch;
+      });
+    },
+  },
+  methods: {
+    ...mapActions(["applyPriceFilter", "applyCategoryFilter", "fetchProducts"]),
+    applyFilters() {
+      // Ваша логика фильтрации
+      this.applyPriceFilter(this.localPriceFilter);
+      this.applyCategoryFilter(this.localCategoryFilter);
+    },
+    fetchInitialProducts() {
+      this.fetchProducts();
+    },
   },
   mounted() {
     apiService
@@ -41,44 +69,6 @@ export default {
         this.error =
           "Ошибка при загрузке продуктов. Пожалуйста, попробуйте позже.";
       });
-  },
-  props: {
-    priceFilter: {
-      type: Object,
-      default: () => ({ minPrice: null, maxPrice: null }),
-    },
-    categoryFilter: String,
-  },
-  watch: {
-    priceFilter: {
-      handler() {
-        this.applyFilters();
-      },
-      deep: true,
-    },
-    categoryFilter: {
-      handler() {
-        this.applyFilters();
-      },
-    },
-  },
-  methods: {
-    applyFilters() {
-      const selectedTag = this.categoryFilter;
-      this.filteredProducts = this.products.filter((product) => {
-        const tagMatch =
-          !selectedTag || (product.tags && product.tags.includes(selectedTag));
-        const priceMatch =
-          (!this.priceFilter ||
-            !this.priceFilter.minPrice ||
-            product.price >= parseFloat(this.priceFilter.minPrice)) &&
-          (!this.priceFilter ||
-            !this.priceFilter.maxPrice ||
-            product.price <= parseFloat(this.priceFilter.maxPrice));
-
-        return tagMatch && priceMatch;
-      });
-    },
   },
 };
 </script>
