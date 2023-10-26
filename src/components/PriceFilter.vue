@@ -4,7 +4,7 @@
       <div class="price-fields-left">
         <label>От</label>
         <input
-          :value="priceFilter.minPrice"
+          :value="isNaN(priceFilter.minPrice) ? '' : priceFilter.minPrice"
           @input="updatePrice('min', $event.target.value)"
           type="text"
           class="input-field"
@@ -14,7 +14,7 @@
       <div class="price-fields-right">
         <label>До</label>
         <input
-          :value="priceFilter.maxPrice"
+          :value="isNaN(priceFilter.maxPrice) ? '' : priceFilter.maxPrice"
           @input="updatePrice('max', $event.target.value)"
           type="text"
           class="input-field"
@@ -35,37 +35,36 @@ export default {
   methods: {
     ...mapMutations(["updatePriceFilter"]),
     updatePrice(type, value) {
-      const price = parseFloat(value) || null;
+      const price = parseFloat(value);
+      const adjustedPrice = isNaN(price) ? null : price;
+
       if (type === "min") {
         this.updatePriceFilter({
-          minPrice: price,
+          minPrice: adjustedPrice,
           maxPrice: this.priceFilter.maxPrice,
         });
       } else {
         this.updatePriceFilter({
           minPrice: this.priceFilter.minPrice,
-          maxPrice: price,
+          maxPrice: adjustedPrice,
         });
       }
     },
     handleFilter() {
       if (
-        !this.validatePrice(this.localMinPrice) ||
-        !this.validatePrice(this.localMaxPrice) ||
-        Number(this.localMinPrice) > Number(this.localMaxPrice)
+        !this.validatePrice(this.priceFilter.minPrice) ||
+        !this.validatePrice(this.priceFilter.maxPrice) ||
+        (this.priceFilter.minPrice !== null &&
+          this.priceFilter.maxPrice !== null &&
+          this.priceFilter.minPrice > this.priceFilter.maxPrice)
       ) {
         alert('Неверный формат цены или условие "От" > "До" не выполняется');
         return;
       }
-      this.updatePriceFilter({
-        minPrice: this.localMinPrice,
-        maxPrice: this.localMaxPrice,
-      });
     },
-
     validatePrice(price) {
       const regex = /^(?!0\d)(\d{1,7}(\.\d{1,2})?)?$/;
-      return regex.test(price);
+      return regex.test(String(price));
     },
   },
 };
