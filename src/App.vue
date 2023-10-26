@@ -1,6 +1,6 @@
 <template>
   <main>
-    <Header />
+    <Header :cartCount="cartCount" />
     <div class="lower-container">
       <FilterPanel
         :priceFilter="priceFilter"
@@ -25,10 +25,15 @@ import ProductScreen from "./components/ProductScreen.vue";
 
 export default {
   data() {
-    return {
-      priceFilter: { minPrice: null, maxPrice: null },
-      categoryFilter: null,
-    };
+    return (
+      {
+        priceFilter: { minPrice: null, maxPrice: null },
+        categoryFilter: null,
+      },
+      {
+        cartCount: 0,
+      }
+    );
   },
   components: {
     Header,
