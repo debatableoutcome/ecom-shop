@@ -15,7 +15,7 @@
         <p class="product-card__price">{{ formatPrice(product.price) }}</p>
 
         <SfButton
-          class="basket relative purchase-btn uppercase"
+          class="basket relative purchase-btn uppercase basket-button"
           square
           variant="tertiary"
           @click="addToCart"
@@ -39,7 +39,7 @@ export default {
   props: {
     product: {
       type: Object,
-      required: true,
+      default: () => ({ minPrice: null, maxPrice: null }),
     },
   },
   data() {
@@ -122,18 +122,21 @@ export default {
   justify-content: space-between;
   flex-direction: column;
 }
-.purchase-btn {
+.basket-button {
   align-self: center;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
   width: 80%;
   height: 30px;
   font-size: 12px;
   background: #ff6600;
   border: none;
-  padding-bottom: 5px;
+  padding: 5px;
 }
 .basket-icon-small {
-  width: 15px;
-  height: 15px;
+  width: 30px;
+
   padding-right: 10px;
 }
 .uppercase {

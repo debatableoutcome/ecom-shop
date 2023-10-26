@@ -26,59 +26,46 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
+
 export default {
-  props: {
-    priceFilter: {
-      type: Object,
-      default: () => ({ minPrice: null, maxPrice: null }),
-    },
-  },
   data() {
     return {
-      minPrice: this.priceFilter ? this.priceFilter.minPrice : null,
-      maxPrice: this.priceFilter ? this.priceFilter.maxPrice : null,
+      minPrice: null,
+      maxPrice: null,
     };
   },
-  watch: {
-    priceFilter: {
-      handler(newVal) {
-        this.minPrice = newVal.minPrice;
-        this.maxPrice = newVal.maxPrice;
-      },
-      deep: true,
-    },
-    minPrice(newVal, oldVal) {
-      console.log("minPrice изменен:", newVal, oldVal); // Логирование здесь
-      this.$emit("update:priceFilter", {
-        minPrice: newVal,
-        maxPrice: this.maxPrice,
-      });
-    },
-    maxPrice(newVal, oldVal) {
-      console.log("maxPrice изменен:", newVal, oldVal); // Логирование здесь
-      this.$emit("update:priceFilter", {
-        minPrice: this.minPrice,
-        maxPrice: newVal,
-      });
-    },
+  mounted() {
+    const { minPrice, maxPrice } = this.$store.state.priceFilter;
+    this.minPrice = minPrice;
+    this.maxPrice = maxPrice;
   },
   methods: {
+    ...mapMutations(["setPriceFilter"]),
     validatePrice(price) {
       const regex = /^(?!0\d)(\d{1,7}(\.\d{1,2})?)?$/;
       return regex.test(price);
     },
     updatePrice(field, value) {
       if (this.validatePrice(value)) {
-        const cleanValue = parseFloat(value) > 0 ? parseFloat(value) : 0;
+        const cleanValue = value === "" ? null : parseFloat(value);
         this[field] = cleanValue;
-        console.log(`${field} обновлено:`, this[field]); // Логирование здесь
+        console.log(`${field} обновлено:`, this[field]);
+        console.log("Отправляем в мутацию:", {
+          minPrice: this.minPrice,
+          maxPrice: this.maxPrice,
+        });
+        this.setPriceFilter({
+          minPrice: this.minPrice,
+          maxPrice: this.maxPrice,
+        });
       }
     },
     handleFilter() {
       if (
         !this.validatePrice(this.minPrice) ||
         !this.validatePrice(this.maxPrice) ||
-        parseFloat(this.minPrice) > parseFloat(this.maxPrice)
+        Number(this.minPrice) > Number(this.maxPrice)
       ) {
         alert('Неверный формат цены или условие "От" > "До" не выполняется');
         return;

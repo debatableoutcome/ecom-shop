@@ -80,6 +80,6 @@ export default {
 
 <style scoped>
 .radio-container {
-  width: 150px;
+  width: 110px;
 }
 </style>
