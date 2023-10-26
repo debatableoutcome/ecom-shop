@@ -116,6 +116,7 @@ export default {
   align-self: self-end;
 }
 .purchase-container {
+  margin-top: 40px;
   height: 30px;
   display: flex;
   padding-right: 30px;
