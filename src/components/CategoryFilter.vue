@@ -69,7 +69,6 @@ export default {
     },
     categoryFilter(newVal) {
       this.radioGroupModelValue = newVal;
-      // this.localCategoryFilter = newVal;
     },
   },
   components: {

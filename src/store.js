@@ -7,7 +7,7 @@ export default createStore({
       minPrice: null,
       maxPrice: null,
     },
-    categoryFilter: null,
+    categoryFilter: "",
   },
   mutations: {
     setPriceFilter(state, payload) {
@@ -16,6 +16,10 @@ export default createStore({
     },
     setCategoryFilter(state, payload) {
       state.categoryFilter = payload;
+    },
+    resetFilters(state) {
+      state.priceFilter = { minPrice: null, maxPrice: null };
+      state.categoryFilter = null;
     },
     incrementCart(state) {
       state.cartCount += 1;
