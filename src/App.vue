@@ -19,21 +19,19 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import Header from "./components/Header.vue";
 import FilterPanel from "./components/FilterPanel.vue";
 import ProductScreen from "./components/ProductScreen.vue";
 
 export default {
   data() {
-    return (
-      {
-        priceFilter: { minPrice: null, maxPrice: null },
-        categoryFilter: null,
-      },
-      {
-        cartCount: 0,
-      }
-    );
+    return {
+      cartCount: 0,
+    };
+  },
+  computed: {
+    ...mapState(["priceFilter", "categoryFilter"]),
   },
   components: {
     Header,
@@ -42,16 +40,16 @@ export default {
   },
   methods: {
     updatePriceFilter(newFilter) {
-      this.priceFilter = newFilter;
-      console.log("Обновлен глобальный priceFilter:", this.priceFilter); // Добавьте логирование
+      this.$store.commit("setPriceFilter", newFilter);
+      console.log("Обновлен глобальный priceFilter:", this.priceFilter);
     },
     updateCategoryFilter(newCategory) {
-      this.categoryFilter = newCategory;
-      console.log("Обновлен глобальный categoryFilter:", this.categoryFilter); // Добавьте логирование
+      this.$store.commit("setCategoryFilter", newCategory);
+      console.log("Обновлен глобальный categoryFilter:", this.categoryFilter);
     },
     handleFiltersReset() {
-      this.priceFilter = { minPrice: null, maxPrice: null };
-      this.categoryFilter = null;
+      this.$store.commit("setPriceFilter", { minPrice: null, maxPrice: null });
+      this.$store.commit("setCategoryFilter", null);
     },
   },
 };
