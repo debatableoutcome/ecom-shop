@@ -1,17 +1,19 @@
 <template>
   <aside class="aside">
-    <h2>Фильтры</h2>
+    <h2><strong>Фильтры</strong></h2>
 
-    <h4>Цена</h4>
+    <h3>Цена</h3>
     <PriceFilter v-model="priceFilter" />
 
-    <h4>Категории</h4>
+    <h3>Категории</h3>
     <CategoryFilter v-model="categoryFilter" />
 
     <SfButton type="submit" class="btn" @click="applyFilters"
-      >Применить</SfButton
+      ><strong>Применить</strong></SfButton
     >
-    <SfButton class="btn" @click="resetFilters">Сбросить</SfButton>
+    <SfButton class="btn" @click="resetFilters"
+      ><strong>Сбросить</strong></SfButton
+    >
   </aside>
 </template>
 
@@ -44,7 +46,7 @@ export default {
 
 <style scoped>
 aside {
-  color: #ff6600;
+  color: rgb(239, 11, 65);
   margin-top: 20px;
   min-width: 270px;
   width: 10%;
@@ -66,8 +68,9 @@ aside {
 .btn {
   width: 70%;
   height: 26px;
-  background: #ff6600;
+  background: #ffffff;
   color: #660099;
+
   font-size: 16px;
   font-weight: 700;
 }
@@ -81,5 +84,8 @@ aside {
   margin-right: 30px;
   transition: all 0.3s;
   border: none;
+}
+h3 {
+  color: white;
 }
 </style>

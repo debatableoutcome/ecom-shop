@@ -134,6 +134,13 @@ export default {
   border: none;
   padding: 5px;
 }
+.basket-button:hover {
+  background: #f49555;
+}
+.basket-button:active {
+  background: rgb(239, 11, 65);
+  color: white;
+}
 .basket-icon-small {
   width: 30px;
 
