@@ -1,7 +1,6 @@
 <template>
   <div class="radio-container">
     <fieldset role="radiogroup">
-      <legend class="mb-2 text-sm font-normal text-gray-500">Категории</legend>
       <div class="flex flex-col">
         <label
           v-for="{ name, id, value } in details"

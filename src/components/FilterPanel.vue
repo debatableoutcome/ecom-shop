@@ -48,10 +48,18 @@ export default {
       );
     },
     resetFilters() {
-      this.$emit("update:priceFilter", { minPrice: null, maxPrice: null });
-      this.$emit("update:categoryFilter", null);
-      console.log("Сброс фильтров");
+      this.$store.commit("setPriceFilter", { minPrice: null, maxPrice: null });
+      this.$store.commit("setCategoryFilter", null);
+
+      console.log(
+        "Сброс фильтров:",
+        "Global Price Filter:",
+        this.priceFilter,
+        "Global Category Filter:",
+        this.categoryFilter
+      );
     },
+
     updatePriceFilter(newFilter) {
       this.$emit("update:priceFilter", newFilter);
     },

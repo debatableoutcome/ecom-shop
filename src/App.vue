@@ -5,9 +5,6 @@
       <FilterPanel
         :priceFilter="priceFilter"
         :categoryFilter="categoryFilter"
-        @update:priceFilter="updatePriceFilter"
-        @update:categoryFilter="updateCategoryFilter"
-        @filtersReset="handleFiltersReset"
       />
 
       <ProductScreen
@@ -37,26 +34,6 @@ export default {
     Header,
     FilterPanel,
     ProductScreen,
-  },
-  methods: {
-    updatePriceFilter(newFilter) {
-      this.$store.commit("setPriceFilter", newFilter);
-      console.log("Обновлен глобальный priceFilter:", newFilter);
-    },
-    updateCategoryFilter(newCategory) {
-      this.$store.commit("setCategoryFilter", newCategory);
-      console.log("Обновлен глобальный categoryFilter:", newCategory);
-    },
-    handleFiltersReset() {
-      console.log("Handling filters reset...");
-      this.$store.commit("setPriceFilter", { minPrice: null, maxPrice: null });
-      this.$store.commit("setCategoryFilter", null);
-      console.log(
-        "Global filters reset to:",
-        this.$store.state.priceFilter,
-        this.$store.state.categoryFilter
-      );
-    },
   },
 };
 </script>
