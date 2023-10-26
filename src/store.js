@@ -26,6 +26,7 @@ export default createStore({
     },
     updateCategoryFilter(state, payload) {
       state.categoryFilter = payload;
+      console.log("updateCategoryFilter payload:", payload);
     },
     incrementCart(state) {
       state.cartCount += 1;
@@ -42,16 +43,16 @@ export default createStore({
           console.error("There was an error fetching the products:", error);
         });
     },
-    applyPriceFilter({ commit }, payload) {
-      if (
-        !payload ||
-        payload.minPrice === undefined ||
-        payload.maxPrice === undefined
-      ) {
-        console.error("Invalid payload:", payload);
-        return;
-      }
-      commit("updatePriceFilter", payload);
+    applyFilters() {
+      let minPrice = isNaN(this.priceFilter.minPrice)
+        ? null
+        : this.priceFilter.minPrice;
+      let maxPrice = isNaN(this.priceFilter.maxPrice)
+        ? null
+        : this.priceFilter.maxPrice;
+
+      this.applyPriceFilter({ minPrice, maxPrice });
+      this.applyCategoryFilter(this.categoryFilter);
     },
 
     applyCategoryFilter({ commit }, payload) {

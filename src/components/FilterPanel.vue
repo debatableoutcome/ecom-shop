@@ -3,16 +3,15 @@
     <h2>Фильтры</h2>
 
     <h4>Цена</h4>
-    <PriceFilter v-model="localPriceFilter" />
+    <PriceFilter v-model="priceFilter" />
 
     <h4>Категории</h4>
-    <CategoryFilter v-model="localCategoryFilter" />
+    <CategoryFilter v-model="categoryFilter" />
 
     <SfButton type="submit" class="btn" @click="applyFilters"
       >Применить</SfButton
     >
-
-    <SfButton class="btn" @click="resetLocalFilters">Сбросить</SfButton>
+    <SfButton class="btn" @click="resetFilters">Сбросить</SfButton>
   </aside>
 </template>
 
@@ -33,55 +32,12 @@ export default {
   computed: {
     ...mapState(["cartCount", "priceFilter", "categoryFilter"]),
   },
-  data() {
-    return {
-      localPriceFilter: this.priceFilter,
-      localCategoryFilter: this.categoryFilter,
-    };
-    // return {
-    //   localPriceFilter: { ...this.priceFilter }, // копия объекта
-    //   localCategoryFilter: this.categoryFilter,
-    // };
-  },
-  watch: {
-    priceFilter: {
-      handler(newValue) {
-        this.localPriceFilter = newValue;
-      },
-      immediate: true,
-    },
-    categoryFilter: {
-      handler(newValue) {
-        this.localCategoryFilter = newValue;
-      },
-      immediate: true,
-    },
-  },
-
   methods: {
-    ...mapActions(["applyPriceFilter", "applyCategoryFilter"]),
+    ...mapActions(["applyPriceFilter", "applyCategoryFilter", "resetFilters"]),
     applyFilters() {
-      this.applyPriceFilter(this.localPriceFilter);
-      this.applyCategoryFilter(this.localCategoryFilter);
+      this.applyPriceFilter(this.priceFilter);
+      this.applyCategoryFilter(this.categoryFilter);
     },
-
-    //   console.log(
-    //     "Применяются фильтры:",
-    //     "Global Price Filter:",
-    //     this.priceFilter,
-    //     "Global Category Filter:",
-    //     this.categoryFilter
-    //   );
-    // },
-    handlePriceChange(min, max) {
-      this.applyPriceFilter({ minPrice: min, maxPrice: max });
-    },
-    handleCategoryChange(category) {
-      this.applyCategoryFilter(category);
-    },
-    // resetLocalFilters() {
-    //   this.resetFilters();
-    // },
   },
 };
 </script>
