@@ -10,9 +10,10 @@
 
 <script>
 import { mapState } from "vuex";
-import Header from "./components/Header.vue";
-import FilterPanel from "./components/FilterPanel.vue";
-import ProductScreen from "./components/ProductScreen.vue";
+import Header from "@/components/Header.vue";
+
+import FilterPanel from "@/components/FilterPanel.vue";
+import ProductScreen from "@/components/ProductScreen.vue";
 
 export default {
   components: {
@@ -28,7 +29,8 @@ export default {
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Trebuchet MS", sans-serif;
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -36,16 +38,15 @@ export default {
   margin-top: 60px;
 }
 main {
-  width: 100vw;
-  height: 100vh;
+  background: rgb(55, 26, 119);
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background: green;
 }
 .lower-container {
-  background: rgb(55, 26, 119);
   width: 100%;
   height: 100%;
   display: flex;

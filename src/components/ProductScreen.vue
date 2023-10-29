@@ -105,7 +105,7 @@ export default {
   justify-content: center;
   width: 800px;
   height: 400px;
-  background-color: rgb(233, 196, 247);
+  background-color: rgb(255, 255, 255);
   font-size: 20px;
   color: rgb(55, 26, 119);
 }
