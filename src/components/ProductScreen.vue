@@ -1,7 +1,7 @@
 <template>
   <div class="screen">
     <div class="gallery">
-      <div v-if="error" class="error-message">
+      <div v-if="showErrorMessage" class="error-message">
         {{ error }}
       </div>
 
@@ -10,6 +10,10 @@
         :key="product.id"
         :product="product"
       />
+
+      <div v-if="showNoProductsMessage" class="no-products-message">
+        Товаров по заданным параметрам не найдено
+      </div>
     </div>
   </div>
 </template>
@@ -26,7 +30,6 @@ export default {
   data() {
     return {
       products: [],
-
       error: null,
     };
   },
@@ -39,22 +42,26 @@ export default {
             product.price >= this.priceFilter.minPrice) &&
           (!this.priceFilter.maxPrice ||
             product.price <= this.priceFilter.maxPrice);
+
         const tagMatch =
           !this.categoryFilter ||
           (product.tags && product.tags.includes(this.categoryFilter));
+
         return priceMatch && tagMatch;
       });
+    },
+    showErrorMessage() {
+      return this.error;
+    },
+    showNoProductsMessage() {
+      return !this.filteredProducts.length;
     },
   },
   methods: {
     ...mapActions(["applyPriceFilter", "applyCategoryFilter", "fetchProducts"]),
     applyFilters() {
-      // Ваша логика фильтрации
-      this.applyPriceFilter(this.localPriceFilter);
-      this.applyCategoryFilter(this.localCategoryFilter);
-    },
-    fetchInitialProducts() {
-      this.fetchProducts();
+      this.applyPriceFilter(this.priceFilter);
+      this.applyCategoryFilter(this.categoryFilter);
     },
   },
   mounted() {
@@ -85,10 +92,22 @@ export default {
 }
 .gallery {
   background: rgb(55, 26, 119);
+
   width: 100%;
+  height: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
+}
+.no-products-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 800px;
+  height: 400px;
+  background-color: rgb(233, 196, 247);
+  font-size: 20px;
+  color: rgb(55, 26, 119);
 }
 
 .error-message {

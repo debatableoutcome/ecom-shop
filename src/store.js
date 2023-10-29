@@ -16,7 +16,6 @@ export default createStore({
       state.products = products;
     },
     updatePriceFilter(state, payload) {
-      console.log("updatePriceFilter payload:", payload);
       if (payload.minPrice !== undefined) {
         state.priceFilter.minPrice = parseFloat(payload.minPrice);
       }
@@ -26,7 +25,6 @@ export default createStore({
     },
     updateCategoryFilter(state, payload) {
       state.categoryFilter = payload;
-      console.log("updateCategoryFilter payload:", payload);
     },
     incrementCart(state) {
       state.cartCount += 1;
