@@ -7,7 +7,7 @@ export default {
     try {
       const response = await axios.get(`${API_URL}/products`, {
         params: {
-          _quantity: quantity || 35,
+          _quantity: quantity || 40,
           _categories_type: categoryType || "uuid",
         },
       });

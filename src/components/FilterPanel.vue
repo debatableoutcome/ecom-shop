@@ -21,8 +21,8 @@
 import { mapState, mapActions } from "vuex";
 
 import { SfButton } from "@storefront-ui/vue";
-import PriceFilter from "./PriceFilter.vue";
-import CategoryFilter from "./CategoryFilter.vue";
+import PriceFilter from "@/components/PriceFilter.vue";
+import CategoryFilter from "@/components/CategoryFilter.vue";
 
 export default {
   name: "FilterPanel",

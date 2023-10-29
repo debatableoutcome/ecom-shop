@@ -82,7 +82,7 @@ export default {
 .product-card {
   width: 300px;
   height: 280px;
-  border: 1px solid #e1e1e1;
+  border: 1px solid black;
   background-color: white;
 }
 
@@ -105,7 +105,7 @@ export default {
   height: 40px;
   cursor: pointer;
   font-size: 12px;
-  color: #777;
+  color: #52103a;
   margin-bottom: 10px;
 }
 
@@ -141,8 +141,7 @@ export default {
   color: white;
 }
 .basket-button:active {
-  background: rgb(239, 11, 65);
-  color: white;
+  color: black;
 }
 .basket-icon-small {
   width: 30px;
