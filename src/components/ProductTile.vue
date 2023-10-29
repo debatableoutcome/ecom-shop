@@ -15,7 +15,7 @@
         <p class="product-card__price">{{ formatPrice(product.price) }}</p>
 
         <SfButton
-          class="basket relative purchase-btn uppercase basket-button"
+          class="basket relative uppercase basket-button"
           square
           variant="tertiary"
           @click="addToCart"
@@ -73,7 +73,6 @@ export default {
     },
     addToCart() {
       this.$store.commit("incrementCart");
-      console.log("++");
     },
   },
 };
@@ -132,7 +131,7 @@ export default {
   height: 30px;
   font-size: 12px;
   background: #c435a5;
-
+  color: white;
   border: none;
   padding: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.769);

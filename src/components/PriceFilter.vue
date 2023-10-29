@@ -6,7 +6,7 @@
         <input
           :value="isNaN(priceFilter.minPrice) ? '' : priceFilter.minPrice"
           @input="updatePrice('min', $event.target.value)"
-          type="text"
+          type="number"
           class="input-field"
           placeholder="0"
         />
@@ -16,7 +16,7 @@
         <input
           :value="isNaN(priceFilter.maxPrice) ? '' : priceFilter.maxPrice"
           @input="updatePrice('max', $event.target.value)"
-          type="text"
+          type="number"
           class="input-field"
           placeholder="10000"
         />
