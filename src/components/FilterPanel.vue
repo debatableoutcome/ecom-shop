@@ -46,6 +46,8 @@ export default {
 
 <style scoped>
 aside {
+  position: fixed;
+  top: 120px;
   color: rgb(239, 11, 65);
   margin-top: 20px;
   min-width: 270px;

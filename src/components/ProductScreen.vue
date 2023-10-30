@@ -82,8 +82,8 @@ export default {
 
 <style scoped>
 .screen {
-  background-color: #ff6600;
-  width: 100%;
+  margin-left: 320px;
+  width: 85%;
   height: 100%;
 }
 .filters {
