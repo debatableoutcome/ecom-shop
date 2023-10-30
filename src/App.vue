@@ -28,6 +28,11 @@ export default {
 </script>
 
 <style>
+body {
+  padding: 0;
+  margin: 0;
+  background: rgb(55, 26, 119);
+}
 #app {
   font-family: "Trebuchet MS", sans-serif;
 
