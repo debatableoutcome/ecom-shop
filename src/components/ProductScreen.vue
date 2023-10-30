@@ -83,6 +83,7 @@ export default {
 <style scoped>
 .screen {
   margin-left: 320px;
+  margin-top: 80px;
   width: 85%;
   height: 100%;
 }
