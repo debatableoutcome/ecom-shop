@@ -38,6 +38,8 @@ export default {
   width: 100%;
   height: 100px;
   display: flex;
+  position: fixed;
+  top: 0;
   justify-content: space-between;
   align-items: center;
   padding: 10px;

@@ -1,9 +1,15 @@
 <template>
   <div class="product-card">
+    <div class="placeholder-div" v-if="showPlaceholder">
+      <div class="no-image">Нет изображения</div>
+    </div>
     <img
       :src="`https://picsum.photos/300/100?random=${product.id}`"
       alt="Product Image"
       class="product-card__image"
+      @load="handleImageLoad"
+      @error="handleImageError"
+      v-show="!showPlaceholder"
     />
 
     <div class="product-card__content">
@@ -12,8 +18,6 @@
         {{ descriptionToShow }}
       </p>
       <div class="purchase-container">
-        <p class="product-card__price">{{ formatPrice(product.price) }}</p>
-
         <SfButton
           class="basket relative uppercase basket-button"
           square
@@ -24,6 +28,7 @@
 
           <strong>В корзину</strong></SfButton
         >
+        <div class="product-card__price">{{ formatPrice(product.price) }}</div>
       </div>
     </div>
   </div>
@@ -45,6 +50,7 @@ export default {
   data() {
     return {
       showFullDescription: false,
+      showPlaceholder: true,
     };
   },
   computed: {
@@ -60,6 +66,12 @@ export default {
     },
   },
   methods: {
+    handleImageLoad() {
+      this.showPlaceholder = false;
+    },
+    handleImageError() {
+      this.showPlaceholder = true;
+    },
     toggleDescription() {
       this.showFullDescription = !this.showFullDescription;
     },
@@ -80,17 +92,29 @@ export default {
 
 <style scoped>
 .product-card {
-  width: 300px;
   height: 280px;
   border: 1px solid black;
   background-color: white;
 }
 
 .product-card__image {
-  height: 35%;
+  height: 40%;
   display: block;
 }
-
+.placeholder-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 40%;
+  background-color: #ccc;
+  text-align: center;
+  line-height: 200px;
+  color: #000;
+  font-size: 16px;
+  overflow: hidden;
+  /* border: 1px solid #000;  */
+}
 .product-card__content {
   padding: 7px;
   text-align: left;
@@ -118,18 +142,17 @@ export default {
   margin-top: 40px;
   height: 30px;
   display: flex;
-  padding-right: 30px;
+  padding: 5px;
   justify-content: space-between;
-  flex-direction: column;
 }
 .basket-button {
   align-self: center;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  width: 80%;
+  width: 40%;
   height: 30px;
-  font-size: 12px;
+  font-size: 10px;
   background: #c435a5;
   color: white;
   border: none;
