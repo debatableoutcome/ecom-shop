@@ -5,7 +5,7 @@
         <label>От</label>
         <input
           :value="isNaN(priceFilter.minPrice) ? '' : priceFilter.minPrice"
-          @input="updatePrice('min', $event.target.value)"
+          @blur="updatePrice('min', $event.target.value)"
           type="number"
           class="input-field"
           placeholder="0"
@@ -15,7 +15,7 @@
         <label>До</label>
         <input
           :value="isNaN(priceFilter.maxPrice) ? '' : priceFilter.maxPrice"
-          @input="updatePrice('max', $event.target.value)"
+          @blur="updatePrice('max', $event.target.value)"
           type="number"
           class="input-field"
           placeholder="10000"
@@ -38,7 +38,7 @@ export default {
       let price = parseFloat(value);
       let adjustedPrice = isNaN(price) ? null : price;
 
-      if (isNaN(adjustedPrice)) {
+      if (isNaN(price)) {
         alert("Введите корректное значение");
         return;
       }
@@ -60,24 +60,6 @@ export default {
         minPrice: minPrice,
         maxPrice: maxPrice,
       });
-    },
-
-    handleFilter() {
-      const minPrice = this.priceFilter.minPrice;
-      const maxPrice = this.priceFilter.maxPrice;
-
-      if (
-        (minPrice !== null && !this.validatePrice(minPrice)) ||
-        (maxPrice !== null && !this.validatePrice(maxPrice))
-      ) {
-        alert("Неверный формат цены");
-        return;
-      }
-    },
-
-    validatePrice(price) {
-      const regex = /^(?!0\d)(\d{1,7}(\.\d{1,2})?)?$/;
-      return regex.test(String(price));
     },
   },
 };

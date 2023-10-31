@@ -56,7 +56,6 @@ main {
   height: 100%;
   display: flex;
   align-items: self-start;
-  /* justify-content: space-between; */
-  /* gap: 20px; */
+
 }
 </style>
