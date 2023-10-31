@@ -35,39 +35,46 @@ export default {
   methods: {
     ...mapMutations(["updatePriceFilter"]),
     updatePrice(type, value) {
-      const price = parseFloat(value);
-      const adjustedPrice = isNaN(price) ? null : price;
+      let price = parseFloat(value);
+      let adjustedPrice = isNaN(price) ? null : price;
 
       if (isNaN(adjustedPrice)) {
         alert("Введите корректное значение");
         return;
       }
 
+      let minPrice = this.priceFilter.minPrice;
+      let maxPrice = this.priceFilter.maxPrice;
+
       if (type === "min") {
-        this.updatePriceFilter({
-          minPrice: adjustedPrice,
-          maxPrice: this.priceFilter.maxPrice,
-        });
+        minPrice = adjustedPrice;
       } else {
-        this.updatePriceFilter({
-          minPrice: this.priceFilter.minPrice,
-          maxPrice: adjustedPrice,
-        });
+        maxPrice = adjustedPrice;
       }
+
+      if (minPrice !== null && maxPrice !== null && minPrice > maxPrice) {
+        [minPrice, maxPrice] = [maxPrice, minPrice];
+      }
+
+      this.updatePriceFilter({
+        minPrice: minPrice,
+        maxPrice: maxPrice,
+      });
     },
 
     handleFilter() {
+      const minPrice = this.priceFilter.minPrice;
+      const maxPrice = this.priceFilter.maxPrice;
+
       if (
-        !this.validatePrice(this.priceFilter.minPrice) ||
-        !this.validatePrice(this.priceFilter.maxPrice) ||
-        (this.priceFilter.minPrice !== null &&
-          this.priceFilter.maxPrice !== null &&
-          this.priceFilter.minPrice > this.priceFilter.maxPrice)
+        (minPrice !== null && !this.validatePrice(minPrice)) ||
+        (maxPrice !== null && !this.validatePrice(maxPrice))
       ) {
-        alert('Неверный формат цены или условие "От" > "До" не выполняется');
+        alert("Неверный формат цены");
         return;
       }
     },
+
     validatePrice(price) {
       const regex = /^(?!0\d)(\d{1,7}(\.\d{1,2})?)?$/;
       return regex.test(String(price));
