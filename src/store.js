@@ -31,34 +31,39 @@ export default createStore({
     },
   },
   actions: {
-    fetchProducts({ commit }) {
-      apiService
-        .getProducts()
-        .then((response) => {
-          commit("setProducts", response.data.data);
-        })
-        .catch((error) => {
-          console.error("There was an error fetching the products:", error);
-        });
+    async fetchProducts({ commit, state }) {
+      const params = {
+        minPrice: state.priceFilter.minPrice,
+        maxPrice: state.priceFilter.maxPrice,
+        tag: state.categoryFilter,
+      };
+      try {
+        const response = await apiService.getProducts(params);
+        commit("setProducts", response.data.data);
+      } catch (error) {
+        console.error("There was an error fetching the products:", error);
+      }
     },
-    applyFilters() {
-      let minPrice = isNaN(this.priceFilter.minPrice)
+    async applyFilters({ dispatch, commit, state }) {
+      let minPrice = isNaN(state.priceFilter.minPrice)
         ? null
-        : this.priceFilter.minPrice;
-      let maxPrice = isNaN(this.priceFilter.maxPrice)
+        : state.priceFilter.minPrice;
+      let maxPrice = isNaN(state.priceFilter.maxPrice)
         ? null
-        : this.priceFilter.maxPrice;
+        : state.priceFilter.maxPrice;
 
-      this.applyPriceFilter({ minPrice, maxPrice });
-      this.applyCategoryFilter(this.categoryFilter);
+      commit("updatePriceFilter", { minPrice, maxPrice });
+      commit("updateCategoryFilter", state.categoryFilter);
+      await dispatch("fetchProducts");
     },
-
-    applyCategoryFilter({ commit }, payload) {
+    async applyCategoryFilter({ commit, dispatch }, payload) {
       commit("updateCategoryFilter", payload);
+      await dispatch("fetchProducts");
     },
-    resetFilters({ commit }) {
+    async resetFilters({ commit, dispatch }) {
       commit("updatePriceFilter", { minPrice: null, maxPrice: null });
       commit("updateCategoryFilter", "");
+      await dispatch("fetchProducts");
     },
   },
   getters: {

@@ -6,7 +6,7 @@
       </div>
 
       <ProductTile
-        v-for="product in filteredProducts"
+        v-for="product in products"
         :key="product.id"
         :product="product"
       />
@@ -21,61 +21,34 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import ProductTile from "@/components/ProductTile.vue";
-import apiService from "@/API/apiService.js";
 
 export default {
   components: {
     ProductTile,
   },
-  data() {
-    return {
-      products: [],
-      error: null,
-    };
-  },
   computed: {
-    ...mapState(["priceFilter", "categoryFilter"]),
-    filteredProducts() {
-      return this.products.filter((product) => {
-        const priceMatch =
-          (!this.priceFilter.minPrice ||
-            product.price >= this.priceFilter.minPrice) &&
-          (!this.priceFilter.maxPrice ||
-            product.price <= this.priceFilter.maxPrice);
-
-        const tagMatch =
-          !this.categoryFilter ||
-          (product.tags && product.tags.includes(this.categoryFilter));
-
-        return priceMatch && tagMatch;
-      });
-    },
+    ...mapState(["products"]),
     showErrorMessage() {
       return this.error;
     },
     showNoProductsMessage() {
-      return !this.filteredProducts.length;
+      return !this.products.length;
     },
+  },
+  data() {
+    return {
+      error: null,
+    };
   },
   methods: {
-    ...mapActions(["applyPriceFilter", "applyCategoryFilter", "fetchProducts"]),
-    applyFilters() {
-      this.applyPriceFilter(this.priceFilter);
-      this.applyCategoryFilter(this.categoryFilter);
-    },
+    ...mapActions(["fetchProducts"]),
   },
   mounted() {
-    apiService
-      .getProducts()
-      .then((response) => {
-        this.products = response.data.data;
-        this.applyFilters();
-      })
-      .catch((error) => {
-        console.error("There was an error fetching the products:", error);
-        this.error =
-          "Ошибка при загрузке продуктов. Пожалуйста, попробуйте позже.";
-      });
+    this.fetchProducts().catch((error) => {
+      console.error("There was an error fetching the products:", error);
+      this.error =
+        "Ошибка при загрузке продуктов. Пожалуйста, попробуйте позже.";
+    });
   },
 };
 </script>
