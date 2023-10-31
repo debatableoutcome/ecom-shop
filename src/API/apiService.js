@@ -7,9 +7,10 @@ export default {
       const response = await axios.get(`${API_URL}/products`, {
         params: {
           _quantity: params.quantity || 100,
-          _minPrice: params.minPrice || null,
-          _maxPrice: params.maxPrice || null,
+          _price_min: params.minPrice || null,
+          _price_max: params.maxPrice || null,
           _tag: params.tag || null,
+          _categories_type: "uuid",
         },
       });
       console.log(response);
