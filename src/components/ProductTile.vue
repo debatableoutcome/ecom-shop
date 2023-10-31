@@ -4,7 +4,9 @@
       <div class="no-image">Нет изображения</div>
     </div>
     <img
-      :src="`https://picsum.photos/300/100?random=${product.id}`"
+      :src="`https://picsum.photos/300/100?random=${
+        product.id
+      }&time=${Date.now()}`"
       alt="Product Image"
       class="product-card__image"
       @load="handleImageLoad"
