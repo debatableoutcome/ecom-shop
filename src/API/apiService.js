@@ -1,14 +1,15 @@
 import axios from "axios";
 
 const API_URL = "https://fakerapi.it/api/v1";
-
 export default {
-  async getProducts(categoryType, quantity) {
+  async getProducts(params = {}) {
     try {
       const response = await axios.get(`${API_URL}/products`, {
         params: {
-          _quantity: quantity || 40,
-          _categories_type: categoryType || "uuid",
+          _quantity: params.quantity || 100,
+          _minPrice: params.minPrice || null,
+          _maxPrice: params.maxPrice || null,
+          _tag: params.tag || null,
         },
       });
       console.log(response);

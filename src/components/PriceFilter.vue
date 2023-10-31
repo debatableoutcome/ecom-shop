@@ -38,6 +38,11 @@ export default {
       const price = parseFloat(value);
       const adjustedPrice = isNaN(price) ? null : price;
 
+      if (isNaN(adjustedPrice)) {
+        alert("Введите корректное значение");
+        return;
+      }
+
       if (type === "min") {
         this.updatePriceFilter({
           minPrice: adjustedPrice,
@@ -50,6 +55,7 @@ export default {
         });
       }
     },
+
     handleFilter() {
       if (
         !this.validatePrice(this.priceFilter.minPrice) ||

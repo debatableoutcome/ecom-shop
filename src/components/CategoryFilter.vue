@@ -19,7 +19,7 @@
 
 <script>
 import { SfRadio } from "@storefront-ui/vue";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapMutations } from "vuex";
 
 export default {
   computed: {
@@ -71,12 +71,17 @@ export default {
     },
 
     radioGroupModelValue(newVal) {
-      this.applyCategoryFilter(newVal);
+      this.updateCategoryFilter(newVal);
     },
   },
 
   methods: {
-    ...mapActions(["applyCategoryFilter", "resetFilters"]),
+    ...mapMutations(["updateCategoryFilter"]),
+    ...mapActions(["resetFilters"]),
+  },
+  resetFilter() {
+    this.resetFilters();
+    this.radioGroupModelValue = "";
   },
   components: {
     SfRadio,

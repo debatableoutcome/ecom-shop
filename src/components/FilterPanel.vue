@@ -11,7 +11,7 @@
     <SfButton type="submit" class="btn" @click="applyFilters"
       ><strong>Применить</strong></SfButton
     >
-    <SfButton class="btn" @click="resetFilters"
+    <SfButton class="btn" @click="resetAllFilters"
       ><strong>Сбросить</strong></SfButton
     >
   </aside>
@@ -37,8 +37,10 @@ export default {
   methods: {
     ...mapActions(["applyPriceFilter", "applyCategoryFilter", "resetFilters"]),
     applyFilters() {
-      this.applyPriceFilter(this.priceFilter);
-      this.applyCategoryFilter(this.categoryFilter);
+      this.$store.dispatch("fetchProducts");
+    },
+    resetAllFilters() {
+      this.resetFilters();
     },
   },
 };
