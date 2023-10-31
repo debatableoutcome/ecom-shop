@@ -17,10 +17,10 @@ export default createStore({
     },
     updatePriceFilter(state, payload) {
       if (payload.minPrice !== undefined) {
-        state.priceFilter.minPrice = parseFloat(payload.minPrice);
+        state.priceFilter.minPrice = payload.minPrice;
       }
       if (payload.maxPrice !== undefined) {
-        state.priceFilter.maxPrice = parseFloat(payload.maxPrice);
+        state.priceFilter.maxPrice = payload.maxPrice;
       }
     },
     updateCategoryFilter(state, payload) {
@@ -31,39 +31,32 @@ export default createStore({
     },
   },
   actions: {
+    resetFilters({ commit, dispatch }) {
+      commit("updatePriceFilter", { minPrice: null, maxPrice: null });
+      commit("updateCategoryFilter", "");
+      dispatch("fetchProducts");
+    },
     async fetchProducts({ commit, state }) {
+      const minPrice =
+        state.priceFilter.minPrice !== null
+          ? Number(state.priceFilter.minPrice).toFixed(2)
+          : null;
+      const maxPrice =
+        state.priceFilter.maxPrice !== null
+          ? Number(state.priceFilter.maxPrice).toFixed(2)
+          : null;
       const params = {
-        minPrice: state.priceFilter.minPrice,
-        maxPrice: state.priceFilter.maxPrice,
+        minPrice,
+        maxPrice,
         tag: state.categoryFilter,
       };
+      console.log("API parameters:", params);
       try {
         const response = await apiService.getProducts(params);
         commit("setProducts", response.data.data);
       } catch (error) {
         console.error("There was an error fetching the products:", error);
       }
-    },
-    async applyFilters({ dispatch, commit, state }) {
-      let minPrice = isNaN(state.priceFilter.minPrice)
-        ? null
-        : state.priceFilter.minPrice;
-      let maxPrice = isNaN(state.priceFilter.maxPrice)
-        ? null
-        : state.priceFilter.maxPrice;
-
-      commit("updatePriceFilter", { minPrice, maxPrice });
-      commit("updateCategoryFilter", state.categoryFilter);
-      await dispatch("fetchProducts");
-    },
-    async applyCategoryFilter({ commit, dispatch }, payload) {
-      commit("updateCategoryFilter", payload);
-      await dispatch("fetchProducts");
-    },
-    async resetFilters({ commit, dispatch }) {
-      commit("updatePriceFilter", { minPrice: null, maxPrice: null });
-      commit("updateCategoryFilter", "");
-      await dispatch("fetchProducts");
     },
   },
   getters: {

@@ -1,5 +1,5 @@
 <template>
-  <aside class="aside">
+  <form class="aside" @submit.prevent="applyFilters">
     <h2><strong>Фильтры</strong></h2>
 
     <h3>Цена</h3>
@@ -14,7 +14,7 @@
     <SfButton class="btn" @click="resetAllFilters"
       ><strong>Сбросить</strong></SfButton
     >
-  </aside>
+  </form>
 </template>
 
 <script>
@@ -47,7 +47,7 @@ export default {
 </script>
 
 <style scoped>
-aside {
+.aside {
   position: fixed;
   top: 120px;
   color: rgb(239, 11, 65);

@@ -31,32 +31,32 @@ export default {
       radioGroupModelValue: this.categoryFilter || "",
       details: [
         {
-          id: "dicta",
+          id: "3aaae99f-60b7-3718-a86b-bbeccbe54902",
           name: "Категория 1",
-          value: "dicta",
+          value: "3aaae99f-60b7-3718-a86b-bbeccbe54902",
         },
         {
-          id: "vel",
+          id: "044d079e-169a-37c1-a3ff-f0810660733e",
           name: "Категория 2",
-          value: "vel",
+          value: "044d079e-169a-37c1-a3ff-f0810660733e",
         },
         {
-          id: "omnis",
+          id: "b1ae871c-b0f5-3971-b7fa-1c6b8d309ca3",
           name: "Категория 3",
-          value: "omnis",
+          value: "b1ae871c-b0f5-3971-b7fa-1c6b8d309ca3",
         },
         {
-          id: "quos",
+          id: "91ac821c-c246-32cc-844f-75f0f105a962",
           name: "Категория 4",
-          value: "quos",
+          value: "91ac821c-c246-32cc-844f-75f0f105a962",
         },
         {
-          id: "eos",
+          id: "f7c1cdd1-33c7-308b-9131-12269b98d38e",
           name: "Категория 5",
-          value: "eos",
+          value: "f7c1cdd1-33c7-308b-9131-12269b98d38e",
         },
         {
-          id: "magni",
+          id: "05634c96-a559-3035-ba82-91f29fa7bb34",
           name: "Категория 6",
           value: "magni",
         },
